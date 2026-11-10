@@ -10,9 +10,9 @@ export default function Inicio() {
         source={require('../../assets/images/logo.png')}
         style={styles.logo}
       />
-      <Text style={styles.titulo}>Doação de alimentos</Text>
+      <Text style={styles.titulo}>SobraBem</Text>
       <Text style={styles.subtitulo}>
-        Sobras do dia de padarias e feiras para ONGs e famílias
+        Sobras do dia de padarias, feiras e mercados para ONGs e famílias
       </Text>
     </Tela>
   );

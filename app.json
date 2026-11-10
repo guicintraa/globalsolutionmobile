@@ -1,18 +1,18 @@
 {
   "expo": {
-    "name": "globalsolutionmobile",
-    "slug": "globalsolutionmobile",
+    "name": "SobraBem",
+    "slug": "sobrabem",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "globalsolutionmobile",
+    "scheme": "sobrabem",
     "userInterfaceStyle": "light",
     "platforms": ["ios", "android"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "package": "br.fiap.mad.globalsolutionmobile.rm562850",
+      "package": "br.fiap.mad.sobrabem.rm562850",
       "adaptiveIcon": {
         "backgroundColor": "#267A3B",
         "foregroundImage": "./assets/android-icon-foreground.png",
