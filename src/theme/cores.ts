@@ -1,0 +1,18 @@
+export const cores = {
+  primaria: '#267A3B',
+  primariaEscura: '#1F6B33',
+  primariaClara: '#E3F2E7',
+  secundaria: '#E8871E',
+  secundariaEscura: '#7A4A12',
+  secundariaClara: '#FDEBD3',
+  fundo: '#FAF8F3',
+  superficie: '#FFFFFF',
+  texto: '#1F2A24',
+  textoSecundario: '#5E6B63',
+  textoInverso: '#FFFFFF',
+  borda: '#E1E5DF',
+  erro: '#B3261E',
+  erroClaro: '#FCE8E6',
+  aviso: '#9A5B00',
+  avisoClaro: '#FDF1DE',
+} as const;

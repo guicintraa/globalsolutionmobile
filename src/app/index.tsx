@@ -1,8 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+
+import { cores, espacos, fontes, tamanhos } from '@/theme';
 
 export default function Inicio() {
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../../assets/images/logo.png')}
+        style={styles.logo}
+      />
       <Text style={styles.titulo}>Doação de alimentos</Text>
       <Text style={styles.subtitulo}>
         Sobras do dia de padarias e feiras para ONGs e famílias
@@ -16,18 +22,24 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 24,
-    backgroundColor: '#FFFFFF',
+    padding: espacos.lg,
+    backgroundColor: cores.fundo,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: espacos.lg,
   },
   titulo: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#1F2A30',
+    fontFamily: fontes.extraNegrito,
+    fontSize: tamanhos.titulo,
+    color: cores.texto,
   },
   subtitulo: {
-    marginTop: 8,
-    fontSize: 16,
+    marginTop: espacos.sm,
+    fontFamily: fontes.regular,
+    fontSize: tamanhos.corpo,
     textAlign: 'center',
-    color: '#5B6B73',
+    color: cores.textoSecundario,
   },
 });
