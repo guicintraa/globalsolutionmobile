@@ -1,10 +1,11 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text } from 'react-native';
 
+import { Tela } from '@/components';
 import { cores, espacos, fontes, tamanhos } from '@/theme';
 
 export default function Inicio() {
   return (
-    <View style={styles.container}>
+    <Tela estilo={styles.conteudo}>
       <Image
         source={require('../../assets/images/logo.png')}
         style={styles.logo}
@@ -13,17 +14,14 @@ export default function Inicio() {
       <Text style={styles.subtitulo}>
         Sobras do dia de padarias e feiras para ONGs e famílias
       </Text>
-    </View>
+    </Tela>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  conteudo: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: espacos.lg,
-    backgroundColor: cores.fundo,
   },
   logo: {
     width: 120,
