@@ -36,3 +36,33 @@ export function paraIsoComFuso(data: Date) {
 export function prazoVencido(iso: string, agora = new Date()) {
   return lerData(iso).getTime() <= agora.getTime();
 }
+
+function mesmoDia(primeira: Date, segunda: Date) {
+  return (
+    primeira.getFullYear() === segunda.getFullYear() &&
+    primeira.getMonth() === segunda.getMonth() &&
+    primeira.getDate() === segunda.getDate()
+  );
+}
+
+export function formatarDataRelativa(iso: string, agora = new Date()) {
+  const data = lerData(iso);
+  const hora = formatarHora(iso);
+  const dia = (deslocamento: number) =>
+    new Date(
+      agora.getFullYear(),
+      agora.getMonth(),
+      agora.getDate() + deslocamento
+    );
+
+  if (mesmoDia(data, agora)) {
+    return `hoje às ${hora}`;
+  }
+  if (mesmoDia(data, dia(1))) {
+    return `amanhã às ${hora}`;
+  }
+  if (mesmoDia(data, dia(-1))) {
+    return `ontem às ${hora}`;
+  }
+  return `${doisDigitos(data.getDate())}/${doisDigitos(data.getMonth() + 1)} às ${hora}`;
+}

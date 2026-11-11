@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   View,
@@ -16,6 +17,8 @@ type TelaProps = {
   rolavel?: boolean;
   bordas?: Edge[];
   estilo?: StyleProp<ViewStyle>;
+  atualizando?: boolean;
+  aoAtualizar?: () => void;
 };
 
 export function Tela({
@@ -23,6 +26,8 @@ export function Tela({
   rolavel = false,
   bordas = ['top', 'right', 'bottom', 'left'],
   estilo,
+  atualizando = false,
+  aoAtualizar,
 }: TelaProps) {
   return (
     <SafeAreaView style={styles.area} edges={bordas}>
@@ -31,6 +36,16 @@ export function Tela({
           <ScrollView
             contentContainerStyle={[styles.conteudo, estilo]}
             keyboardShouldPersistTaps="handled"
+            refreshControl={
+              aoAtualizar ? (
+                <RefreshControl
+                  refreshing={atualizando}
+                  onRefresh={aoAtualizar}
+                  colors={[cores.primaria]}
+                  tintColor={cores.primaria}
+                />
+              ) : undefined
+            }
           >
             {children}
           </ScrollView>

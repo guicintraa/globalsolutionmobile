@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { cabecalho, cores, fontes } from '@/theme';
@@ -9,6 +10,7 @@ import { BotaoDeIcone } from './BotaoDeIcone';
 
 export function Abas({ children }: { children: ReactNode }) {
   const { sair } = useAuth();
+  const { bottom } = useSafeAreaInsets();
 
   function confirmarSaida() {
     Alert.alert('Sair da conta', 'Deseja mesmo sair?', [
@@ -31,6 +33,7 @@ export function Abas({ children }: { children: ReactNode }) {
         tabBarActiveTintColor: cores.primaria,
         tabBarInactiveTintColor: cores.textoSecundario,
         tabBarStyle: {
+          height: 60 + bottom,
           backgroundColor: cores.superficie,
           borderTopColor: cores.borda,
         },

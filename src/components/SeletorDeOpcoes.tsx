@@ -2,13 +2,13 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { cores, espacos, fontes, raios, tamanhos } from '@/theme';
 
-export type Opcao<T extends string> = {
+export type Opcao<T extends string | number> = {
   valor: T;
   rotulo: string;
   descricao?: string;
 };
 
-type SeletorDeOpcoesProps<T extends string> = {
+type SeletorDeOpcoesProps<T extends string | number> = {
   rotulo: string;
   opcoes: Opcao<T>[];
   valor: T | null;
@@ -16,7 +16,7 @@ type SeletorDeOpcoesProps<T extends string> = {
   erro?: string;
 };
 
-export function SeletorDeOpcoes<T extends string>({
+export function SeletorDeOpcoes<T extends string | number>({
   rotulo,
   opcoes,
   valor,

@@ -1,10 +1,12 @@
 import * as SecureStore from 'expo-secure-store';
 
-import type { LoginResponse } from '@/types/api';
+import type { LoginResponse, UsuarioResponse } from '@/types/api';
 
 const CHAVE = 'sobrabem.sessao';
 
-export type SessaoSalva = Pick<LoginResponse, 'token' | 'expiraEm' | 'usuario'>;
+export type SessaoSalva = Pick<LoginResponse, 'token' | 'expiraEm'> & {
+  usuario: UsuarioResponse;
+};
 
 export const armazenamentoDaSessao = {
   salvar: (sessao: SessaoSalva) =>

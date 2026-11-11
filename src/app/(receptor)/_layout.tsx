@@ -7,10 +7,15 @@ export default function LayoutDoReceptor() {
     <Stack
       screenOptions={{
         ...cabecalho,
+        headerBackButtonDisplayMode: 'minimal',
         contentStyle: { backgroundColor: cores.fundo },
       }}
     >
       <Stack.Screen name="(abas)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="doacao/[id]"
+        options={{ title: 'Detalhes da doação' }}
+      />
     </Stack>
   );
 }

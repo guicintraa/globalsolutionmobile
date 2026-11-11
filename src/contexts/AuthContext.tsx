@@ -14,7 +14,7 @@ import { authService } from '@/services/authService';
 import type {
   LoginRequest,
   RegistroRequest,
-  UsuarioDaSessao,
+  UsuarioResponse,
 } from '@/types/api';
 import { prazoVencido } from '@/utils/datas';
 
@@ -23,7 +23,7 @@ const AVISO_DE_ADMINISTRADOR =
   'O perfil de administrador é usado pelo Swagger, não pelo app.';
 
 type ValorDaAutenticacao = {
-  usuario: UsuarioDaSessao | null;
+  usuario: UsuarioResponse | null;
   restaurando: boolean;
   aviso: string | null;
   entrar: (dados: LoginRequest) => Promise<void>;
@@ -34,7 +34,7 @@ type ValorDaAutenticacao = {
 const AuthContext = createContext<ValorDaAutenticacao | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [usuario, setUsuario] = useState<UsuarioDaSessao | null>(null);
+  const [usuario, setUsuario] = useState<UsuarioResponse | null>(null);
   const [restaurando, setRestaurando] = useState(true);
   const [aviso, setAviso] = useState<string | null>(null);
 
@@ -89,13 +89,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    await armazenamentoDaSessao.salvar({
-      token: resposta.token,
-      expiraEm: resposta.expiraEm,
-      usuario: resposta.usuario,
-    });
     definirToken(resposta.token);
-    setUsuario(resposta.usuario);
+    try {
+      const perfil = await authService.buscarMeuUsuario();
+      await armazenamentoDaSessao.salvar({
+        token: resposta.token,
+        expiraEm: resposta.expiraEm,
+        usuario: perfil,
+      });
+      setUsuario(perfil);
+    } catch (erro) {
+      definirToken(null);
+      throw erro;
+    }
   }, []);
 
   const registrar = useCallback(async (dados: RegistroRequest) => {
