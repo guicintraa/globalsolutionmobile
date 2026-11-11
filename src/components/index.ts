@@ -1,8 +1,12 @@
+export { Abas } from './Abas';
 export { Aviso } from './Aviso';
 export { Botao } from './Botao';
+export { BotaoDeIcone } from './BotaoDeIcone';
+export type { NomeDoIcone } from './BotaoDeIcone';
 export { Campo } from './Campo';
 export { Carregando } from './Carregando';
 export { Cartao } from './Cartao';
+export { IconeDaAba } from './IconeDaAba';
 export { ListaVazia } from './ListaVazia';
 export { MensagemErro } from './MensagemErro';
 export { SeletorDeOpcoes } from './SeletorDeOpcoes';

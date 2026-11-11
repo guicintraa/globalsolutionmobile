@@ -10,7 +10,18 @@ import { arquivosDeFonte, cores } from '@/theme';
 SplashScreen.preventAutoHideAsync();
 
 function Navegacao() {
-  const { usuario } = useAuth();
+  const { usuario, restaurando } = useAuth();
+  const papel = usuario?.papel;
+
+  useEffect(() => {
+    if (!restaurando) {
+      SplashScreen.hideAsync();
+    }
+  }, [restaurando]);
+
+  if (restaurando) {
+    return null;
+  }
 
   return (
     <Stack
@@ -23,8 +34,11 @@ function Navegacao() {
         <Stack.Screen name="login" />
         <Stack.Screen name="cadastro" />
       </Stack.Protected>
-      <Stack.Protected guard={!!usuario}>
-        <Stack.Screen name="index" />
+      <Stack.Protected guard={papel === 'DOADOR'}>
+        <Stack.Screen name="(doador)" />
+      </Stack.Protected>
+      <Stack.Protected guard={papel === 'RECEPTOR'}>
+        <Stack.Screen name="(receptor)" />
       </Stack.Protected>
     </Stack>
   );
@@ -32,15 +46,8 @@ function Navegacao() {
 
 export default function RootLayout() {
   const [fontesCarregadas, erroNasFontes] = useFonts(arquivosDeFonte);
-  const pronto = fontesCarregadas || erroNasFontes !== null;
 
-  useEffect(() => {
-    if (pronto) {
-      SplashScreen.hideAsync();
-    }
-  }, [pronto]);
-
-  if (!pronto) {
+  if (!fontesCarregadas && !erroNasFontes) {
     return null;
   }
 

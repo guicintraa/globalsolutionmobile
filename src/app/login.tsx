@@ -12,7 +12,7 @@ import { temErros, validarLogin } from '@/utils/validacoes';
 import type { ErrosDoFormulario } from '@/utils/validacoes';
 
 export default function Login() {
-  const { entrar } = useAuth();
+  const { entrar, aviso } = useAuth();
   const parametros = useLocalSearchParams<{
     email?: string;
     cadastro?: string;
@@ -40,6 +40,7 @@ export default function Login() {
     } catch (erro) {
       setErros(errosPorCampo(erro));
       setErroGeral(mensagemDoErro(erro));
+    } finally {
       setEnviando(false);
     }
   }
@@ -59,12 +60,13 @@ export default function Login() {
         </Text>
       </View>
 
-      {parametros.cadastro === 'ok' && !erroGeral ? (
+      {parametros.cadastro === 'ok' && !erroGeral && !aviso ? (
         <Aviso
           tom="sucesso"
           mensagem="Conta criada. Entre com seu e-mail e senha."
         />
       ) : null}
+      {aviso && !erroGeral ? <Aviso mensagem={aviso} /> : null}
       {erroGeral ? <Aviso mensagem={erroGeral} /> : null}
 
       <Campo
