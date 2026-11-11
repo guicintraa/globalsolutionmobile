@@ -1,13 +1,11 @@
-import type { LoginRequest, TipoPerfil } from '@/types/api';
+import type { LoginRequest } from '@/types/api';
 
-import { tiposDePerfilPorPapel } from './rotulos';
 import type { PapelDeCadastro } from './rotulos';
 
 export type ErrosDoFormulario<T> = Partial<Record<keyof T, string>>;
 
 export type FormularioDeCadastro = {
   papel: PapelDeCadastro | null;
-  tipoPerfil: TipoPerfil | null;
   nome: string;
   email: string;
   senha: string;
@@ -52,13 +50,6 @@ export function validarCadastro(dados: FormularioDeCadastro) {
 
   if (!dados.papel) {
     erros.papel = 'Escolha se você é doador ou receptor.';
-  }
-  if (
-    !dados.tipoPerfil ||
-    (dados.papel &&
-      !tiposDePerfilPorPapel[dados.papel].includes(dados.tipoPerfil))
-  ) {
-    erros.tipoPerfil = 'Escolha o tipo de perfil.';
   }
 
   const nome = dados.nome.trim();

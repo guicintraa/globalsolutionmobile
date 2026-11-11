@@ -8,7 +8,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { ApiError } from '@/services/api';
 import { cores, espacos, fontes, tamanhos } from '@/theme';
 import { errosPorCampo, mensagemDoErro } from '@/utils/mensagensErro';
-import { rotulosDoTipoPerfil, tiposDePerfilPorPapel } from '@/utils/rotulos';
 import type { PapelDeCadastro } from '@/utils/rotulos';
 import { temErros, validarCadastro } from '@/utils/validacoes';
 import type {
@@ -27,7 +26,6 @@ const opcoesDePapel: Opcao<PapelDeCadastro>[] = [
 
 const formularioVazio: FormularioDeCadastro = {
   papel: null,
-  tipoPerfil: null,
   nome: '',
   email: '',
   senha: '',
@@ -54,25 +52,13 @@ export default function Cadastro() {
     setFormulario((atual) => ({ ...atual, [chave]: valor }));
   }
 
-  function escolherPapel(papel: PapelDeCadastro) {
-    setFormulario((atual) => ({
-      ...atual,
-      papel,
-      tipoPerfil:
-        atual.tipoPerfil &&
-        tiposDePerfilPorPapel[papel].includes(atual.tipoPerfil)
-          ? atual.tipoPerfil
-          : null,
-    }));
-  }
-
   async function enviar() {
     const encontrados = validarCadastro(formulario);
     setErros(encontrados);
     setErroGeral(null);
 
-    const { papel, tipoPerfil } = formulario;
-    if (temErros(encontrados) || !papel || !tipoPerfil) {
+    const { papel } = formulario;
+    if (temErros(encontrados) || !papel) {
       return;
     }
 
@@ -84,7 +70,6 @@ export default function Cadastro() {
         senha: formulario.senha,
         telefone: formulario.telefone || null,
         papel,
-        tipoPerfil,
         endereco: papel === 'DOADOR' ? formulario.endereco.trim() : null,
         cidade: formulario.cidade.trim(),
         uf: formulario.uf,
@@ -104,13 +89,6 @@ export default function Cadastro() {
     }
   }
 
-  const opcoesDeTipo = formulario.papel
-    ? tiposDePerfilPorPapel[formulario.papel].map((tipo) => ({
-        valor: tipo,
-        rotulo: rotulosDoTipoPerfil[tipo],
-      }))
-    : [];
-
   return (
     <Tela rolavel>
       <Text style={styles.titulo} accessibilityRole="header">
@@ -126,18 +104,9 @@ export default function Cadastro() {
         rotulo="Você é"
         opcoes={opcoesDePapel}
         valor={formulario.papel}
-        aoSelecionar={escolherPapel}
+        aoSelecionar={(papel) => alterar('papel', papel)}
         erro={erros.papel}
       />
-      {formulario.papel ? (
-        <SeletorDeOpcoes
-          rotulo="Tipo de perfil"
-          opcoes={opcoesDeTipo}
-          valor={formulario.tipoPerfil}
-          aoSelecionar={(tipo) => alterar('tipoPerfil', tipo)}
-          erro={erros.tipoPerfil}
-        />
-      ) : null}
 
       <Campo
         rotulo={

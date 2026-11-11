@@ -1,7 +1,5 @@
 export type Papel = 'DOADOR' | 'RECEPTOR' | 'ADMIN';
 
-export type TipoPerfil = 'PADARIA' | 'FEIRA' | 'MERCADO' | 'ONG' | 'FAMILIA';
-
 export type Unidade = 'UNIDADE' | 'KG' | 'PACOTE';
 
 export type StatusDoacao = 'ATIVA' | 'ESGOTADA' | 'EXPIRADA' | 'CANCELADA';
@@ -14,7 +12,6 @@ export type RegistroRequest = {
   senha: string;
   telefone: string | null;
   papel: Exclude<Papel, 'ADMIN'>;
-  tipoPerfil: TipoPerfil;
   endereco: string | null;
   cidade: string;
   uf: string;
@@ -26,7 +23,6 @@ export type UsuarioResponse = {
   email: string;
   telefone: string | null;
   papel: Papel;
-  tipoPerfil: TipoPerfil | null;
   endereco: string | null;
   cidade: string | null;
   uf: string | null;
