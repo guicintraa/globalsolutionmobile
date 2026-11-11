@@ -1,9 +1,12 @@
+export { Aviso } from './Aviso';
 export { Botao } from './Botao';
 export { Campo } from './Campo';
 export { Carregando } from './Carregando';
 export { Cartao } from './Cartao';
 export { ListaVazia } from './ListaVazia';
 export { MensagemErro } from './MensagemErro';
+export { SeletorDeOpcoes } from './SeletorDeOpcoes';
+export type { Opcao } from './SeletorDeOpcoes';
 export { Selo } from './Selo';
 export type { TomDoSelo } from './Selo';
 export { Tela } from './Tela';
