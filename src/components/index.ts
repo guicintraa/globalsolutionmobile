@@ -12,6 +12,8 @@ export { CodigoDeRetirada } from './CodigoDeRetirada';
 export { FiltroDeOpcoes } from './FiltroDeOpcoes';
 export { IconeDaAba } from './IconeDaAba';
 export { Informacao } from './Informacao';
+export { LinhaComIcone } from './LinhaComIcone';
+export { ListaPaginada } from './ListaPaginada';
 export { ListaVazia } from './ListaVazia';
 export { MensagemErro } from './MensagemErro';
 export { SeletorDeOpcoes } from './SeletorDeOpcoes';

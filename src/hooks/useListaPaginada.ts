@@ -12,6 +12,19 @@ type Pedido<T> = {
   versao: number;
 };
 
+export type EstadoDaLista<T> = {
+  itens: T[];
+  erro: unknown;
+  carregando: boolean;
+  atualizando: boolean;
+  carregandoMais: boolean;
+  temMais: boolean;
+  recarregar: () => void;
+  tentarNovamente: () => void;
+  carregarMais: () => void;
+  substituirItem: (item: T) => void;
+};
+
 type Resultado<T> = Pedido<T> & {
   itens: T[];
   paginaCarregada: number;
@@ -26,7 +39,7 @@ function juntarSemRepetir<T extends ItemComId>(atuais: T[], novos: T[]) {
 
 export function useListaPaginada<T extends ItemComId>(
   buscarPagina: BuscarPagina<T>
-) {
+): EstadoDaLista<T> {
   const [pedido, setPedido] = useState<Pedido<T>>({
     buscarPagina,
     pagina: 0,
@@ -115,5 +128,15 @@ export function useListaPaginada<T extends ItemComId>(
         pedir(resultado.paginaCarregada + 1, versao);
       }
     },
+    substituirItem: (item) =>
+      setResultado(
+        (anterior) =>
+          anterior && {
+            ...anterior,
+            itens: anterior.itens.map((atual) =>
+              atual.id === item.id ? item : atual
+            ),
+          }
+      ),
   };
 }

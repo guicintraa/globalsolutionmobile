@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import {
   Aviso,
@@ -28,6 +28,7 @@ import {
   formatarEndereco,
   formatarTelefone,
 } from '@/utils/formatos';
+import { abrirNoMapa, ligarPara } from '@/utils/links';
 import { errosPorCampo, mensagemDoErro } from '@/utils/mensagensErro';
 import {
   descreverQuantidade,
@@ -41,12 +42,6 @@ const ERROS_QUE_MUDAM_A_DOACAO: CodigoDoErro[] = [
   'SALDO_INSUFICIENTE',
   'DOACAO_INDISPONIVEL',
 ];
-
-function abrirLink(url: string, alternativa: string) {
-  Linking.openURL(url).catch(() =>
-    Alert.alert('Não foi possível abrir', alternativa)
-  );
-}
 
 function irParaMinhasReservas() {
   router.dismissTo('/reservas');
@@ -167,12 +162,7 @@ export default function DetalheDaDoacao() {
               <Botao
                 titulo="Ver no mapa"
                 variante="secundario"
-                onPress={() =>
-                  abrirLink(
-                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`,
-                    endereco
-                  )
-                }
+                onPress={() => abrirNoMapa(endereco)}
                 estilo={styles.acao}
               />
             ) : null}
@@ -180,9 +170,7 @@ export default function DetalheDaDoacao() {
               <Botao
                 titulo="Ligar"
                 variante="secundario"
-                onPress={() =>
-                  abrirLink(`tel:${telefone}`, formatarTelefone(telefone))
-                }
+                onPress={() => ligarPara(telefone)}
                 estilo={styles.acao}
               />
             ) : null}

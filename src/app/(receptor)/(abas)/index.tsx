@@ -1,23 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useCallback, useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  RefreshControl,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import {
-  Botao,
   CardDoacao,
-  Carregando,
   FiltroDeOpcoes,
+  ListaPaginada,
   ListaVazia,
-  MensagemErro,
   Tela,
 } from '@/components';
 import { useAuth } from '@/contexts/AuthContext';
@@ -27,7 +17,6 @@ import { useRequisicao } from '@/hooks/useRequisicao';
 import { categoriaService } from '@/services/categoriaService';
 import { doacaoService } from '@/services/doacaoService';
 import { cores, espacos, fontes, tamanhos } from '@/theme';
-import { mensagemDoErro } from '@/utils/mensagensErro';
 
 const TAMANHO_DA_PAGINA = 10;
 
@@ -85,49 +74,6 @@ export default function DoacoesDisponiveis() {
     router.push({ pathname: '/doacao/[id]', params: { id: String(id) } });
   }
 
-  function renderizarVazio() {
-    if (lista.carregando) {
-      return <Carregando mensagem="Buscando doações..." />;
-    }
-    if (lista.erro) {
-      return (
-        <MensagemErro
-          mensagem={mensagemDoErro(lista.erro)}
-          aoTentarNovamente={tentarNovamente}
-        />
-      );
-    }
-    return (
-      <ListaVazia
-        titulo="Nenhuma doação disponível agora"
-        mensagem={
-          filtrando
-            ? 'Tente ver todas as cidades e categorias, ou puxe a lista para atualizar.'
-            : 'Padarias, feiras e mercados publicam o que sobrou do dia. Puxe a lista para atualizar.'
-        }
-        textoDaAcao={filtrando ? 'Limpar filtros' : undefined}
-        aoAcionar={filtrando ? limparFiltros : undefined}
-      />
-    );
-  }
-
-  function renderizarRodape() {
-    if (lista.carregandoMais) {
-      return <ActivityIndicator color={cores.primaria} style={styles.rodape} />;
-    }
-    if (lista.erro && lista.itens.length > 0) {
-      return (
-        <Botao
-          titulo="Tentar carregar mais"
-          variante="secundario"
-          onPress={lista.tentarNovamente}
-          estilo={styles.rodape}
-        />
-      );
-    }
-    return undefined;
-  }
-
   return (
     <Tela bordas={['left', 'right']} estilo={styles.tela}>
       <View style={styles.filtros}>
@@ -161,25 +107,26 @@ export default function DoacoesDisponiveis() {
         ) : null}
       </View>
 
-      <FlatList
-        data={lista.itens}
-        keyExtractor={(doacao) => String(doacao.id)}
-        renderItem={({ item }) => (
-          <CardDoacao doacao={item} onPress={() => abrirDoacao(item.id)} />
+      <ListaPaginada
+        lista={lista}
+        renderizarItem={(doacao) => (
+          <CardDoacao doacao={doacao} onPress={() => abrirDoacao(doacao.id)} />
         )}
-        contentContainerStyle={styles.lista}
-        onEndReached={lista.carregarMais}
-        onEndReachedThreshold={0.5}
-        refreshControl={
-          <RefreshControl
-            refreshing={lista.atualizando}
-            onRefresh={atualizar}
-            colors={[cores.primaria]}
-            tintColor={cores.primaria}
+        vazio={
+          <ListaVazia
+            titulo="Nenhuma doação disponível agora"
+            mensagem={
+              filtrando
+                ? 'Tente ver todas as cidades e categorias, ou puxe a lista para atualizar.'
+                : 'Padarias, feiras e mercados publicam o que sobrou do dia. Puxe a lista para atualizar.'
+            }
+            textoDaAcao={filtrando ? 'Limpar filtros' : undefined}
+            aoAcionar={filtrando ? limparFiltros : undefined}
           />
         }
-        ListEmptyComponent={renderizarVazio()}
-        ListFooterComponent={renderizarRodape()}
+        mensagemDeCarregamento="Buscando doações..."
+        aoAtualizar={atualizar}
+        aoTentarNovamente={tentarNovamente}
       />
     </Tela>
   );
@@ -210,15 +157,5 @@ const styles = StyleSheet.create({
     fontFamily: fontes.negrito,
     fontSize: tamanhos.legenda + 1,
     color: cores.primaria,
-  },
-  lista: {
-    flexGrow: 1,
-    gap: espacos.md,
-    paddingHorizontal: espacos.lg,
-    paddingTop: espacos.sm,
-    paddingBottom: espacos.lg,
-  },
-  rodape: {
-    marginVertical: espacos.sm,
   },
 });

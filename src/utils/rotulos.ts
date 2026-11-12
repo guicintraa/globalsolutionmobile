@@ -1,5 +1,5 @@
 import type { TomDoSelo } from '@/components';
-import type { Papel, StatusDoacao, Unidade } from '@/types/api';
+import type { Papel, StatusDoacao, StatusReserva, Unidade } from '@/types/api';
 
 export type PapelDeCadastro = Exclude<Papel, 'ADMIN'>;
 
@@ -21,6 +21,20 @@ export const tonsDoStatusDaDoacao: Record<StatusDoacao, TomDoSelo> = {
   ESGOTADA: 'aviso',
   EXPIRADA: 'neutro',
   CANCELADA: 'erro',
+};
+
+export const rotulosDoStatusDaReserva: Record<StatusReserva, string> = {
+  ATIVA: 'Ativa',
+  RETIRADA: 'Retirada',
+  CANCELADA: 'Cancelada',
+  EXPIRADA: 'Expirada',
+};
+
+export const tonsDoStatusDaReserva: Record<StatusReserva, TomDoSelo> = {
+  ATIVA: 'sucesso',
+  RETIRADA: 'neutro',
+  CANCELADA: 'erro',
+  EXPIRADA: 'aviso',
 };
 
 const nomesDaUnidade: Record<Unidade, { singular: string; plural: string }> = {

@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { cores, espacos, fontes, tamanhos } from '@/theme';
@@ -10,8 +9,8 @@ import {
   tonsDoStatusDaDoacao,
 } from '@/utils/rotulos';
 
-import type { NomeDoIcone } from './BotaoDeIcone';
 import { Cartao } from './Cartao';
+import { LinhaComIcone } from './LinhaComIcone';
 import { Selo } from './Selo';
 
 type CardDoacaoProps = {
@@ -55,26 +54,15 @@ export function CardDoacao({
 
       <View style={styles.linhas}>
         {mostrarDoador ? (
-          <Linha icone="storefront-outline" texto={doador.nome} />
+          <LinhaComIcone icone="storefront-outline" texto={doador.nome} />
         ) : null}
         {mostrarDoador && local ? (
-          <Linha icone="location-outline" texto={local} />
+          <LinhaComIcone icone="location-outline" texto={local} />
         ) : null}
-        <Linha icone="cube-outline" texto={`Disponível: ${saldo}`} />
-        <Linha icone="time-outline" texto={prazo} />
+        <LinhaComIcone icone="cube-outline" texto={`Disponível: ${saldo}`} />
+        <LinhaComIcone icone="time-outline" texto={prazo} />
       </View>
     </Cartao>
-  );
-}
-
-function Linha({ icone, texto }: { icone: NomeDoIcone; texto: string }) {
-  return (
-    <View style={styles.linha}>
-      <Ionicons name={icone} size={16} color={cores.textoSecundario} />
-      <Text style={styles.texto} numberOfLines={1}>
-        {texto}
-      </Text>
-    </View>
   );
 }
 
@@ -93,16 +81,5 @@ const styles = StyleSheet.create({
   linhas: {
     marginTop: espacos.sm,
     gap: espacos.xs,
-  },
-  linha: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: espacos.xs + 2,
-  },
-  texto: {
-    flex: 1,
-    fontFamily: fontes.regular,
-    fontSize: tamanhos.legenda + 1,
-    color: cores.textoSecundario,
   },
 });
