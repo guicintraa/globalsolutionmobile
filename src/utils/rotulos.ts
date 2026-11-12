@@ -29,7 +29,11 @@ const nomesDaUnidade: Record<Unidade, { singular: string; plural: string }> = {
   PACOTE: { singular: 'pacote', plural: 'pacotes' },
 };
 
-export function descreverQuantidade(quantidade: number, unidade: Unidade) {
+export function nomeDaUnidade(quantidade: number, unidade: Unidade) {
   const nomes = nomesDaUnidade[unidade];
-  return `${quantidade} ${quantidade === 1 ? nomes.singular : nomes.plural}`;
+  return quantidade === 1 ? nomes.singular : nomes.plural;
+}
+
+export function descreverQuantidade(quantidade: number, unidade: Unidade) {
+  return `${quantidade} ${nomeDaUnidade(quantidade, unidade)}`;
 }

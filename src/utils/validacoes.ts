@@ -1,5 +1,6 @@
-import type { LoginRequest } from '@/types/api';
+import type { LoginRequest, Unidade } from '@/types/api';
 
+import { descreverQuantidade } from './rotulos';
 import type { PapelDeCadastro } from './rotulos';
 
 export type ErrosDoFormulario<T> = Partial<Record<keyof T, string>>;
@@ -13,6 +14,10 @@ export type FormularioDeCadastro = {
   endereco: string;
   cidade: string;
   uf: string;
+};
+
+export type FormularioDeReserva = {
+  quantidade: string;
 };
 
 const FORMATO_DE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -94,6 +99,25 @@ export function validarCadastro(dados: FormularioDeCadastro) {
 
   if (!/^[A-Z]{2}$/.test(dados.uf)) {
     erros.uf = 'Informe a UF com 2 letras.';
+  }
+
+  return erros;
+}
+
+export function validarReserva(
+  dados: FormularioDeReserva,
+  disponivel: number,
+  unidade: Unidade
+) {
+  const erros: ErrosDoFormulario<FormularioDeReserva> = {};
+  const quantidade = Number(dados.quantidade);
+
+  if (!dados.quantidade) {
+    erros.quantidade = 'Informe a quantidade.';
+  } else if (!Number.isInteger(quantidade) || quantidade < 1) {
+    erros.quantidade = 'A quantidade mínima é 1.';
+  } else if (quantidade > disponivel) {
+    erros.quantidade = `Máximo disponível: ${descreverQuantidade(disponivel, unidade)}.`;
   }
 
   return erros;

@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
 import { cores, espacos, fontes, raios, tamanhos } from '@/theme';
 
 type AvisoProps = {
   mensagem: string;
   tom?: 'erro' | 'sucesso';
+  estilo?: StyleProp<ViewStyle>;
 };
 
 const paletas = {
@@ -12,12 +14,12 @@ const paletas = {
   sucesso: { fundo: cores.primariaClara, texto: cores.primaria },
 } as const;
 
-export function Aviso({ mensagem, tom = 'erro' }: AvisoProps) {
+export function Aviso({ mensagem, tom = 'erro', estilo }: AvisoProps) {
   const paleta = paletas[tom];
 
   return (
     <View
-      style={[styles.aviso, { backgroundColor: paleta.fundo }]}
+      style={[styles.aviso, { backgroundColor: paleta.fundo }, estilo]}
       accessibilityRole="alert"
       accessibilityLiveRegion="polite"
     >
