@@ -7,10 +7,15 @@ export default function LayoutDoDoador() {
     <Stack
       screenOptions={{
         ...cabecalho,
+        headerBackButtonDisplayMode: 'minimal',
         contentStyle: { backgroundColor: cores.fundo },
       }}
     >
       <Stack.Screen name="(abas)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="doacao/[id]/editar"
+        options={{ title: 'Editar doação' }}
+      />
     </Stack>
   );
 }

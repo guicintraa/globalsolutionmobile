@@ -23,6 +23,7 @@ export type EstadoDaLista<T> = {
   tentarNovamente: () => void;
   carregarMais: () => void;
   substituirItem: (item: T) => void;
+  removerItem: (id: number) => void;
 };
 
 type Resultado<T> = Pedido<T> & {
@@ -136,6 +137,14 @@ export function useListaPaginada<T extends ItemComId>(
             itens: anterior.itens.map((atual) =>
               atual.id === item.id ? item : atual
             ),
+          }
+      ),
+    removerItem: (id) =>
+      setResultado(
+        (anterior) =>
+          anterior && {
+            ...anterior,
+            itens: anterior.itens.filter((item) => item.id !== id),
           }
       ),
   };

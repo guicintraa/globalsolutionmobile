@@ -8,12 +8,14 @@ import { cores, espacos, fontes, raios, tamanhos } from '@/theme';
 type CampoProps = TextInputProps & {
   rotulo: string;
   erro?: string;
+  dica?: string;
   ref?: Ref<TextInputInstance>;
 };
 
 export function Campo({
   rotulo,
   erro,
+  dica,
   ref,
   secureTextEntry = false,
   multiline = false,
@@ -71,6 +73,8 @@ export function Campo({
         <Text style={styles.erro} accessibilityLiveRegion="polite">
           {erro}
         </Text>
+      ) : dica ? (
+        <Text style={styles.dica}>{dica}</Text>
       ) : null}
     </View>
   );
@@ -132,5 +136,11 @@ const styles = StyleSheet.create({
     fontFamily: fontes.semibold,
     fontSize: tamanhos.legenda,
     color: cores.erro,
+  },
+  dica: {
+    marginTop: espacos.xs,
+    fontFamily: fontes.regular,
+    fontSize: tamanhos.legenda,
+    color: cores.textoSecundario,
   },
 });

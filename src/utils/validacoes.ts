@@ -1,5 +1,6 @@
-import type { LoginRequest, Unidade } from '@/types/api';
+import type { CategoriaResponse, LoginRequest, Unidade } from '@/types/api';
 
+import { MINUTOS_MINIMOS_DE_PRAZO } from './regras';
 import { descreverQuantidade } from './rotulos';
 import type { PapelDeCadastro } from './rotulos';
 
@@ -18,6 +19,23 @@ export type FormularioDeCadastro = {
 
 export type FormularioDeReserva = {
   quantidade: string;
+};
+
+export type FormularioDeDoacao = {
+  titulo: string;
+  descricao: string;
+  categoriaId: number | null;
+  quantidadeTotal: string;
+  unidade: Unidade | null;
+  prazoRetirada: Date | null;
+  orientacoesConservacao: string;
+  geradaPorIa: boolean;
+};
+
+type ContextoDaDoacao = {
+  categoria?: CategoriaResponse;
+  reservado?: number;
+  agora?: Date;
 };
 
 const FORMATO_DE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -118,6 +136,62 @@ export function validarReserva(
     erros.quantidade = 'A quantidade mínima é 1.';
   } else if (quantidade > disponivel) {
     erros.quantidade = `Máximo disponível: ${descreverQuantidade(disponivel, unidade)}.`;
+  }
+
+  return erros;
+}
+
+export function validarDoacao(
+  dados: FormularioDeDoacao,
+  { categoria, reservado = 0, agora = new Date() }: ContextoDaDoacao = {}
+) {
+  const erros: ErrosDoFormulario<FormularioDeDoacao> = {};
+
+  const titulo = dados.titulo.trim();
+  if (titulo.length < 3 || titulo.length > 100) {
+    erros.titulo = 'O título deve ter de 3 a 100 caracteres.';
+  }
+
+  if (dados.descricao.trim().length > 500) {
+    erros.descricao = 'A descrição deve ter até 500 caracteres.';
+  }
+
+  if (dados.categoriaId === null) {
+    erros.categoriaId = 'Escolha a categoria.';
+  }
+
+  const quantidade = Number(dados.quantidadeTotal);
+  if (
+    !dados.quantidadeTotal ||
+    !Number.isInteger(quantidade) ||
+    quantidade < 1 ||
+    quantidade > 9999
+  ) {
+    erros.quantidadeTotal = 'Informe uma quantidade de 1 a 9999.';
+  } else if (quantidade < reservado) {
+    erros.quantidadeTotal = `A quantidade não pode ser menor que o já reservado (${reservado}).`;
+  }
+
+  if (!dados.unidade) {
+    erros.unidade = 'Escolha a unidade.';
+  }
+
+  const prazo = dados.prazoRetirada;
+  const minimo = agora.getTime() + MINUTOS_MINIMOS_DE_PRAZO * 60 * 1000;
+  if (!prazo) {
+    erros.prazoRetirada = 'Escolha até quando a doação pode ser retirada.';
+  } else if (prazo.getTime() < minimo) {
+    erros.prazoRetirada = `Escolha um horário daqui a pelo menos ${MINUTOS_MINIMOS_DE_PRAZO} minutos.`;
+  } else if (
+    categoria &&
+    prazo.getTime() > agora.getTime() + categoria.prazoMaxHoras * 3600 * 1000
+  ) {
+    erros.prazoRetirada = `${categoria.nome} pode ficar no máximo ${categoria.prazoMaxHoras} h. Escolha um horário mais cedo.`;
+  }
+
+  if (dados.orientacoesConservacao.trim().length > 1000) {
+    erros.orientacoesConservacao =
+      'As orientações devem ter até 1000 caracteres.';
   }
 
   return erros;

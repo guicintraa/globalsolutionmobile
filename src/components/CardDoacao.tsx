@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { cores, espacos, fontes, tamanhos } from '@/theme';
@@ -18,6 +19,7 @@ type CardDoacaoProps = {
   onPress?: () => void;
   mostrarStatus?: boolean;
   mostrarDoador?: boolean;
+  acoes?: ReactNode;
 };
 
 export function CardDoacao({
@@ -25,6 +27,7 @@ export function CardDoacao({
   onPress,
   mostrarStatus = false,
   mostrarDoador = true,
+  acoes,
 }: CardDoacaoProps) {
   const { doador } = doacao;
   const local = [doador.cidade, doador.endereco].filter(Boolean).join(' · ');
@@ -62,6 +65,8 @@ export function CardDoacao({
         <LinhaComIcone icone="cube-outline" texto={`Disponível: ${saldo}`} />
         <LinhaComIcone icone="time-outline" texto={prazo} />
       </View>
+
+      {acoes ? <View style={styles.acoes}>{acoes}</View> : null}
     </Cartao>
   );
 }
@@ -81,5 +86,10 @@ const styles = StyleSheet.create({
   linhas: {
     marginTop: espacos.sm,
     gap: espacos.xs,
+  },
+  acoes: {
+    flexDirection: 'row',
+    gap: espacos.sm,
+    marginTop: espacos.md,
   },
 });
