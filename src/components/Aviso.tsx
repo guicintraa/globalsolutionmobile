@@ -5,13 +5,14 @@ import { cores, espacos, fontes, raios, tamanhos } from '@/theme';
 
 type AvisoProps = {
   mensagem: string;
-  tom?: 'erro' | 'sucesso';
+  tom?: 'erro' | 'sucesso' | 'aviso';
   estilo?: StyleProp<ViewStyle>;
 };
 
 const paletas = {
   erro: { fundo: cores.erroClaro, texto: cores.erro },
   sucesso: { fundo: cores.primariaClara, texto: cores.primaria },
+  aviso: { fundo: cores.avisoClaro, texto: cores.aviso },
 } as const;
 
 export function Aviso({ mensagem, tom = 'erro', estilo }: AvisoProps) {

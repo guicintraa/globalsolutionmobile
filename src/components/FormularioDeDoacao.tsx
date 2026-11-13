@@ -1,15 +1,20 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { useRequisicao } from '@/hooks/useRequisicao';
 import { ApiError } from '@/services/api';
 import { categoriaService } from '@/services/categoriaService';
+import { iaService } from '@/services/iaService';
 import { cores, espacos, fontes, tamanhos } from '@/theme';
 import type { DoacaoRequest, DoacaoResponse, Unidade } from '@/types/api';
 import { lerData, paraIsoComFuso } from '@/utils/datas';
 import { errosPorCampo, mensagemDoErro } from '@/utils/mensagensErro';
 import { MINUTOS_MINIMOS_DE_PRAZO } from '@/utils/regras';
-import { temErros, validarDoacao } from '@/utils/validacoes';
+import {
+  temErros,
+  validarDoacao,
+  validarPedidoDeOrientacao,
+} from '@/utils/validacoes';
 import type {
   ErrosDoFormulario,
   FormularioDeDoacao as Formulario,
@@ -19,6 +24,7 @@ import { Aviso } from './Aviso';
 import { Botao } from './Botao';
 import { Campo } from './Campo';
 import { CampoDeDataHora } from './CampoDeDataHora';
+import { NotaDaIa } from './NotaDaIa';
 import { SeletorDeOpcoes } from './SeletorDeOpcoes';
 import type { Opcao } from './SeletorDeOpcoes';
 
@@ -59,6 +65,9 @@ export function FormularioDeDoacao({
   const [erros, setErros] = useState<ErrosDoFormulario<Formulario>>({});
   const [erroGeral, setErroGeral] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
+  const [gerando, setGerando] = useState(false);
+  const [avisoDaIa, setAvisoDaIa] = useState<string | null>(null);
+  const [fontesDaIa, setFontesDaIa] = useState<string[]>([]);
 
   const reservado = inicial
     ? inicial.quantidadeTotal - inicial.quantidadeDisponivel
@@ -87,6 +96,65 @@ export function FormularioDeDoacao({
   function alterarOrientacoes(texto: string) {
     alterar('orientacoesConservacao', texto);
     alterar('geradaPorIa', false);
+    setFontesDaIa([]);
+  }
+
+  async function gerarOrientacao() {
+    const encontrados = validarPedidoDeOrientacao(formulario);
+    const { categoriaId } = formulario;
+    if (temErros(encontrados) || categoriaId === null) {
+      const pendencias = [
+        encontrados.titulo && 'preencha o título',
+        encontrados.descricao && 'encurte a descrição',
+        encontrados.categoriaId && 'escolha a categoria',
+      ].filter(Boolean);
+      setErros((atuais) => ({ ...atuais, ...encontrados }));
+      setAvisoDaIa(`Para gerar a orientação, ${pendencias.join(' e ')}.`);
+      return;
+    }
+
+    setGerando(true);
+    setAvisoDaIa(null);
+    try {
+      const resposta = await iaService.gerarOrientacao({
+        titulo: formulario.titulo.trim(),
+        descricao: formulario.descricao.trim() || null,
+        categoriaId,
+      });
+      const { orientacao } = resposta;
+      if (orientacao) {
+        alterar('orientacoesConservacao', orientacao);
+        alterar('geradaPorIa', true);
+        setFontesDaIa(resposta.fontes);
+      }
+      if (resposta.aviso) {
+        setAvisoDaIa(resposta.aviso);
+      } else if (!orientacao) {
+        setAvisoDaIa(
+          'A IA não encontrou orientação para este alimento. Escreva a orientação.'
+        );
+      }
+    } catch (erro) {
+      setErros((atuais) => ({ ...atuais, ...errosPorCampo(erro) }));
+      setAvisoDaIa(mensagemDoErro(erro));
+    } finally {
+      setGerando(false);
+    }
+  }
+
+  function pedirOrientacao() {
+    if (!formulario.orientacoesConservacao.trim()) {
+      gerarOrientacao();
+      return;
+    }
+    Alert.alert(
+      'Substituir orientação',
+      'A orientação escrita será trocada pela sugestão da IA.',
+      [
+        { text: 'Voltar', style: 'cancel' },
+        { text: 'Substituir', onPress: gerarOrientacao },
+      ]
+    );
   }
 
   async function enviar() {
@@ -220,12 +288,40 @@ export function FormularioDeDoacao({
         placeholder="Ex.: Manter em embalagem fechada, em local seco."
       />
 
-      <Botao titulo={textoDoBotao} onPress={enviar} carregando={enviando} />
+      <View style={styles.ia}>
+        {formulario.geradaPorIa && formulario.orientacoesConservacao.trim() ? (
+          <NotaDaIa fontes={fontesDaIa} />
+        ) : null}
+        {avisoDaIa ? (
+          <Aviso mensagem={avisoDaIa} tom="aviso" estilo={styles.semMargem} />
+        ) : null}
+        <Botao
+          titulo="Gerar orientação com IA"
+          variante="secundario"
+          onPress={pedirOrientacao}
+          carregando={gerando}
+          desabilitado={enviando}
+        />
+      </View>
+
+      <Botao
+        titulo={textoDoBotao}
+        onPress={enviar}
+        carregando={enviando}
+        desabilitado={gerando}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  ia: {
+    gap: espacos.sm,
+    marginBottom: espacos.lg,
+  },
+  semMargem: {
+    marginBottom: 0,
+  },
   bloco: {
     marginBottom: espacos.md,
   },

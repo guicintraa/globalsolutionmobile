@@ -18,6 +18,7 @@ export { LinhaComIcone } from './LinhaComIcone';
 export { ListaPaginada } from './ListaPaginada';
 export { ListaVazia } from './ListaVazia';
 export { MensagemErro } from './MensagemErro';
+export { NotaDaIa } from './NotaDaIa';
 export { SeletorDeOpcoes } from './SeletorDeOpcoes';
 export type { Opcao } from './SeletorDeOpcoes';
 export { Selo } from './Selo';

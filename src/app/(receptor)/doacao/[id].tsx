@@ -12,6 +12,7 @@ import {
   CodigoDeRetirada,
   Informacao,
   MensagemErro,
+  NotaDaIa,
   Selo,
   Tela,
 } from '@/components';
@@ -20,7 +21,7 @@ import { ApiError } from '@/services/api';
 import type { CodigoDoErro } from '@/services/api';
 import { doacaoService } from '@/services/doacaoService';
 import { reservaService } from '@/services/reservaService';
-import { cores, espacos, fontes, raios, tamanhos } from '@/theme';
+import { cores, espacos, fontes, tamanhos } from '@/theme';
 import type { DoacaoResponse, ReservaResponse } from '@/types/api';
 import { formatarDataRelativa, prazoVencido } from '@/utils/datas';
 import {
@@ -187,18 +188,7 @@ export default function DetalheDaDoacao() {
             <Text style={styles.orientacao}>
               {doacao.orientacoesConservacao}
             </Text>
-            {doacao.geradaPorIa ? (
-              <View style={styles.notaDaIa}>
-                <Ionicons
-                  name="sparkles-outline"
-                  size={16}
-                  color={cores.secundariaEscura}
-                />
-                <Text style={styles.textoDaIa}>
-                  Orientação gerada por IA. Na dúvida, não consuma.
-                </Text>
-              </View>
-            ) : null}
+            {doacao.geradaPorIa ? <NotaDaIa /> : null}
           </Cartao>
         </>
       ) : null}
@@ -425,19 +415,5 @@ const styles = StyleSheet.create({
     fontSize: tamanhos.corpo,
     lineHeight: 22,
     color: cores.texto,
-  },
-  notaDaIa: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: espacos.xs + 2,
-    padding: espacos.sm,
-    borderRadius: raios.sm,
-    backgroundColor: cores.secundariaClara,
-  },
-  textoDaIa: {
-    flex: 1,
-    fontFamily: fontes.semibold,
-    fontSize: tamanhos.legenda,
-    color: cores.secundariaEscura,
   },
 });

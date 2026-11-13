@@ -196,3 +196,22 @@ export function validarDoacao(
 
   return erros;
 }
+
+export function validarPedidoDeOrientacao(
+  dados: Pick<FormularioDeDoacao, 'titulo' | 'descricao' | 'categoriaId'>
+) {
+  const erros: ErrosDoFormulario<FormularioDeDoacao> = {};
+
+  const titulo = dados.titulo.trim();
+  if (titulo.length < 3 || titulo.length > 100) {
+    erros.titulo = 'O título deve ter de 3 a 100 caracteres.';
+  }
+  if (dados.descricao.trim().length > 500) {
+    erros.descricao = 'A descrição deve ter até 500 caracteres.';
+  }
+  if (dados.categoriaId === null) {
+    erros.categoriaId = 'Escolha a categoria.';
+  }
+
+  return erros;
+}
