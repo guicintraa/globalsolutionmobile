@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   },
   acoes: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: espacos.sm,
     marginTop: espacos.md,
   },

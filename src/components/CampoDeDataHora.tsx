@@ -3,20 +3,14 @@ import DateTimePicker, {
   DateTimePickerAndroid,
 } from '@react-native-community/datetimepicker';
 import { useState } from 'react';
-import {
-  Modal,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { cores, espacos, fontes, raios, tamanhos } from '@/theme';
 import { formatarDataRelativa } from '@/utils/datas';
 import { capitalizar } from '@/utils/formatos';
 
 import { Botao } from './Botao';
+import { JanelaInferior } from './JanelaInferior';
 
 const MINUTO = 60 * 1000;
 const QUINZE_MINUTOS = 15 * MINUTO;
@@ -128,38 +122,33 @@ export function CampoDeDataHora({
         <Text style={styles.dica}>{dica}</Text>
       ) : null}
 
-      {selecaoNoIos ? (
-        <Modal
-          transparent
-          animationType="fade"
-          onRequestClose={() => setSelecaoNoIos(null)}
-        >
-          <View style={styles.fundo}>
-            <View style={styles.janela}>
-              <Text style={styles.tituloDaJanela}>{rotulo}</Text>
-              <DateTimePicker
-                value={selecaoNoIos.data}
-                mode="datetime"
-                display="spinner"
-                locale="pt-BR"
-                themeVariant="light"
-                minuteInterval={5}
-                minimumDate={selecaoNoIos.minimo}
-                maximumDate={selecaoNoIos.maximo}
-                onValueChange={(_, data) =>
-                  setSelecaoNoIos((atual) => atual && { ...atual, data })
-                }
-              />
-              <Botao titulo="Confirmar" onPress={confirmarNoIos} />
-              <Botao
-                titulo="Cancelar"
-                variante="secundario"
-                onPress={() => setSelecaoNoIos(null)}
-              />
-            </View>
-          </View>
-        </Modal>
-      ) : null}
+      <JanelaInferior
+        visivel={selecaoNoIos !== null}
+        titulo={rotulo}
+        aoFechar={() => setSelecaoNoIos(null)}
+      >
+        {selecaoNoIos ? (
+          <DateTimePicker
+            value={selecaoNoIos.data}
+            mode="datetime"
+            display="spinner"
+            locale="pt-BR"
+            themeVariant="light"
+            minuteInterval={5}
+            minimumDate={selecaoNoIos.minimo}
+            maximumDate={selecaoNoIos.maximo}
+            onValueChange={(_, data) =>
+              setSelecaoNoIos((atual) => atual && { ...atual, data })
+            }
+          />
+        ) : null}
+        <Botao titulo="Confirmar" onPress={confirmarNoIos} />
+        <Botao
+          titulo="Cancelar"
+          variante="secundario"
+          onPress={() => setSelecaoNoIos(null)}
+        />
+      </JanelaInferior>
     </View>
   );
 }
@@ -212,22 +201,5 @@ const styles = StyleSheet.create({
     fontFamily: fontes.semibold,
     fontSize: tamanhos.legenda,
     color: cores.erro,
-  },
-  fundo: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
-  },
-  janela: {
-    gap: espacos.sm,
-    padding: espacos.lg,
-    borderTopLeftRadius: raios.lg,
-    borderTopRightRadius: raios.lg,
-    backgroundColor: cores.superficie,
-  },
-  tituloDaJanela: {
-    fontFamily: fontes.extraNegrito,
-    fontSize: tamanhos.subtitulo,
-    color: cores.texto,
   },
 });

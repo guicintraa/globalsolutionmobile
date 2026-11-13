@@ -16,6 +16,10 @@ export default function LayoutDoDoador() {
         name="doacao/[id]/editar"
         options={{ title: 'Editar doação' }}
       />
+      <Stack.Screen
+        name="doacao/[id]/reservas"
+        options={{ title: 'Reservas da doação' }}
+      />
     </Stack>
   );
 }

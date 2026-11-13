@@ -14,6 +14,7 @@ export { FiltroDeOpcoes } from './FiltroDeOpcoes';
 export { FormularioDeDoacao } from './FormularioDeDoacao';
 export { IconeDaAba } from './IconeDaAba';
 export { Informacao } from './Informacao';
+export { JanelaInferior } from './JanelaInferior';
 export { LinhaComIcone } from './LinhaComIcone';
 export { ListaPaginada } from './ListaPaginada';
 export { ListaVazia } from './ListaVazia';

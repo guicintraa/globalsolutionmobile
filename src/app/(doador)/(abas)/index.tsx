@@ -62,6 +62,13 @@ export default function MinhasDoacoes() {
     }
   }
 
+  function verReservas(doacao: DoacaoResponse) {
+    router.push({
+      pathname: '/doacao/[id]/reservas',
+      params: { id: String(doacao.id), titulo: doacao.titulo },
+    });
+  }
+
   function editar(doacao: DoacaoResponse) {
     router.push({
       pathname: '/doacao/[id]/editar',
@@ -154,6 +161,11 @@ export default function MinhasDoacoes() {
             mostrarDoador={false}
             acoes={
               <>
+                <Botao
+                  titulo="Ver reservas"
+                  onPress={() => verReservas(doacao)}
+                  estilo={styles.acaoInteira}
+                />
                 {podeAlterarDoacao(doacao.status) ? (
                   <Botao
                     titulo="Editar"
@@ -207,5 +219,9 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 44,
     paddingHorizontal: espacos.sm,
+  },
+  acaoInteira: {
+    flexBasis: '100%',
+    minHeight: 44,
   },
 });

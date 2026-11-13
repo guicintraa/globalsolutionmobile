@@ -13,7 +13,6 @@ import {
   Selo,
   Tela,
 } from '@/components';
-import type { Opcao } from '@/components';
 import { useAtualizarAoVoltar } from '@/hooks/useAtualizarAoVoltar';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
 import { ApiError } from '@/services/api';
@@ -27,6 +26,7 @@ import { abrirNoMapa } from '@/utils/links';
 import { mensagemDoErro } from '@/utils/mensagensErro';
 import {
   descreverQuantidade,
+  opcoesDeSituacaoDaReserva,
   rotulosDoStatusDaReserva,
   tonsDoStatusDaReserva,
 } from '@/utils/rotulos';
@@ -36,13 +36,6 @@ const TAMANHO_DA_PAGINA = 10;
 const ERROS_QUE_MUDAM_A_RESERVA: CodigoDoErro[] = [
   'ESTADO_INVALIDO',
   'NAO_ENCONTRADO',
-];
-
-const opcoesDeSituacao: Opcao<StatusReserva>[] = [
-  { valor: 'ATIVA', rotulo: 'Ativas' },
-  { valor: 'RETIRADA', rotulo: 'Retiradas' },
-  { valor: 'CANCELADA', rotulo: 'Canceladas' },
-  { valor: 'EXPIRADA', rotulo: 'Expiradas' },
 ];
 
 export default function MinhasReservas() {
@@ -103,7 +96,7 @@ export default function MinhasReservas() {
       <View style={styles.filtros}>
         <FiltroDeOpcoes
           rotulo="Filtrar por situação"
-          opcoes={opcoesDeSituacao}
+          opcoes={opcoesDeSituacaoDaReserva}
           valor={situacao}
           aoSelecionar={setSituacao}
         />

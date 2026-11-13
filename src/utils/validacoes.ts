@@ -1,4 +1,9 @@
-import type { CategoriaResponse, LoginRequest, Unidade } from '@/types/api';
+import type {
+  CategoriaResponse,
+  LoginRequest,
+  RetiradaRequest,
+  Unidade,
+} from '@/types/api';
 
 import { MINUTOS_MINIMOS_DE_PRAZO } from './regras';
 import { descreverQuantidade } from './rotulos';
@@ -211,6 +216,16 @@ export function validarPedidoDeOrientacao(
   }
   if (dados.categoriaId === null) {
     erros.categoriaId = 'Escolha a categoria.';
+  }
+
+  return erros;
+}
+
+export function validarRetirada(dados: RetiradaRequest) {
+  const erros: ErrosDoFormulario<RetiradaRequest> = {};
+
+  if (!/^[A-Z0-9]{6}$/.test(dados.codigoRetirada)) {
+    erros.codigoRetirada = 'Digite os 6 caracteres do código.';
   }
 
   return erros;
