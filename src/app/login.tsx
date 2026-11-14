@@ -108,6 +108,9 @@ export default function Login() {
           Criar conta
         </Link>
       </View>
+      <Link href="/sobre" style={styles.sobre}>
+        Sobre o App
+      </Link>
     </Tela>
   );
 }
@@ -157,5 +160,13 @@ const styles = StyleSheet.create({
     fontFamily: fontes.negrito,
     fontSize: tamanhos.corpo,
     color: cores.primaria,
+  },
+  sobre: {
+    alignSelf: 'center',
+    marginTop: espacos.sm,
+    paddingVertical: espacos.sm,
+    fontFamily: fontes.semibold,
+    fontSize: tamanhos.legenda + 1,
+    color: cores.textoSecundario,
   },
 });

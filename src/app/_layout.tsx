@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
-import { arquivosDeFonte, cores } from '@/theme';
+import { arquivosDeFonte, cabecalho, cores } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -40,6 +40,15 @@ function Navegacao() {
       <Stack.Protected guard={papel === 'RECEPTOR'}>
         <Stack.Screen name="(receptor)" />
       </Stack.Protected>
+      <Stack.Screen
+        name="sobre"
+        options={{
+          ...cabecalho,
+          headerShown: true,
+          headerBackButtonDisplayMode: 'minimal',
+          title: 'Sobre o App',
+        }}
+      />
     </Stack>
   );
 }
