@@ -8,7 +8,11 @@ import { iaService } from '@/services/iaService';
 import { cores, espacos, fontes, tamanhos } from '@/theme';
 import type { DoacaoRequest, DoacaoResponse, Unidade } from '@/types/api';
 import { lerData, paraIsoComFuso } from '@/utils/datas';
-import { errosPorCampo, mensagemDoErro } from '@/utils/mensagensErro';
+import {
+  errosPorCampo,
+  mensagemDoCodigo,
+  mensagemDoErro,
+} from '@/utils/mensagensErro';
 import { MINUTOS_MINIMOS_DE_PRAZO } from '@/utils/regras';
 import {
   temErros,
@@ -135,8 +139,13 @@ export function FormularioDeDoacao({
         );
       }
     } catch (erro) {
-      setErros((atuais) => ({ ...atuais, ...errosPorCampo(erro) }));
-      setAvisoDaIa(mensagemDoErro(erro));
+      const errosDoPedido = errosPorCampo(erro);
+      setErros((atuais) => ({ ...atuais, ...errosDoPedido }));
+      setAvisoDaIa(
+        temErros(errosDoPedido)
+          ? mensagemDoErro(erro)
+          : mensagemDoCodigo('IA_INDISPONIVEL')
+      );
     } finally {
       setGerando(false);
     }

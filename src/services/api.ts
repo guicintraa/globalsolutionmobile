@@ -1,9 +1,9 @@
 import type { CodigoErro, ErroDeCampo, ErroResponse } from '@/types/api';
 
 const URL_BASE = process.env.EXPO_PUBLIC_API_URL ?? '';
-const TEMPO_LIMITE_MS = 30000;
+const TEMPO_LIMITE_MS = 60000;
 
-export type CodigoDoErro = CodigoErro | 'FALHA_DE_REDE';
+export type CodigoDoErro = CodigoErro | 'FALHA_DE_REDE' | 'TEMPO_ESGOTADO';
 
 export class ApiError extends Error {
   status: number;
@@ -102,7 +102,10 @@ export async function api<T>(caminho: string, opcoes: Opcoes = {}) {
       signal: controle.signal,
     });
   } catch {
-    throw new ApiError(0, 'FALHA_DE_REDE');
+    throw new ApiError(
+      0,
+      controle.signal.aborted ? 'TEMPO_ESGOTADO' : 'FALHA_DE_REDE'
+    );
   } finally {
     clearTimeout(temporizador);
   }
@@ -115,9 +118,6 @@ export async function api<T>(caminho: string, opcoes: Opcoes = {}) {
     throw erro;
   }
 
-  if (resposta.status === 204) {
-    return undefined as T;
-  }
-
-  return (await resposta.json()) as T;
+  const texto = await resposta.text();
+  return (texto ? JSON.parse(texto) : undefined) as T;
 }

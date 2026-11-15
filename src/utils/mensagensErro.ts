@@ -20,7 +20,13 @@ const mensagens: Record<CodigoDoErro, string> = {
   ERRO_INTERNO: 'Algo deu errado no servidor. Tente de novo.',
   IA_INDISPONIVEL: 'A IA está indisponível agora. Escreva a orientação.',
   FALHA_DE_REDE: 'Sem conexão com o servidor. Tente de novo.',
+  TEMPO_ESGOTADO:
+    'O servidor demorou para responder. Aguarde alguns segundos e tente de novo.',
 };
+
+export function mensagemDoCodigo(codigo: CodigoDoErro) {
+  return mensagens[codigo];
+}
 
 export function mensagemDoErro(erro: unknown) {
   if (erro instanceof ApiError) {
