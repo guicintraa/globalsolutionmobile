@@ -11,7 +11,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://gs-sobrabem-java-first.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://gs-sobrabem-java.onrender.com"
       }
     }
   }

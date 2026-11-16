@@ -7,10 +7,7 @@
     "icon": "./assets/icon.png",
     "scheme": "sobrabem",
     "userInterfaceStyle": "light",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "ios": {
       "supportsTablet": true
     },
@@ -41,6 +38,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "efddabc7-f164-4875-98b0-725f8e87ddbc"
+      }
+    },
+    "owner": "guicintraa"
   }
 }
