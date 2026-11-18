@@ -64,7 +64,7 @@ A tela Sobre o App fica em `src/app/sobre.tsx` e abre pelo login ou pelo ícone 
 | 03 Autenticação      | cadastro e login na API Java, token JWT guardado no expo-secure-store, logout que limpa o token e volta ao login em qualquer 401 |
 | 04 Estilização       | tema próprio em `src/theme` (cores, fonte Nunito, espaçamentos) e ícone, splash e logo em `assets/`                              |
 | 05 Arquitetura       | pastas por responsabilidade, TypeScript, ESLint + Prettier e poucas bibliotecas                                                  |
-| 06 Vídeo             | link no arquivo de entrega                                                                                                       |
+| 06 Vídeo             | https://youtu.be/P3i5SsJJ-pk                                                                                                     |
 | 07 Publicação        | APK gerado com EAS Build e distribuído pelo Firebase App Distribution, com o hash do commit em Sobre o App                       |
 
 ## Tecnologias
