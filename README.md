@@ -16,13 +16,19 @@ Global Solution 2026/2 · CitizenTech · FIAP
 
 ## Versão publicada
 
-| Item            | Valor                                                                          |
-| --------------- | ------------------------------------------------------------------------------ |
-| Distribuição    | Firebase App Distribution (o professor foi convidado como testador)            |
-| Commit da build | `092eeb9`, o mesmo hash que aparece no app em **Sobre o App**                  |
-| API             | https://gs-sobrabem-java.onrender.com (API Java do grupo, hospedada no Render) |
+| Item            | Valor                                                                                |
+| --------------- | ------------------------------------------------------------------------------------ |
+| Distribuição    | Firebase App Distribution (o professor foi convidado como testador)                  |
+| Commit da build | `c3e9eeb`, o mesmo hash que aparece no app em **Sobre o App**                        |
+| API             | https://gs-sobrabem-java-final.onrender.com (API Java do grupo, hospedada no Render) |
 
-A API está no plano gratuito do Render: depois de 15 minutos sem uso ela desliga, e a primeira chamada pode levar cerca de 1 minuto. O app espera até 60 segundos e, se passar disso, avisa e deixa tentar de novo.
+A API está no plano gratuito do Render: depois de 15 minutos sem uso ela desliga, e voltar pode levar alguns minutos. O app espera até 60 segundos por resposta e, se passar disso, avisa e deixa tentar de novo.
+
+## Vídeo de demonstração
+
+[![Vídeo de demonstração do SobraBem no YouTube](https://img.youtube.com/vi/WhVK23B2Upg/hqdefault.jpg)](https://youtu.be/WhVK23B2Upg)
+
+Clique na imagem para assistir ao app funcionando com a API publicada, seguindo o roteiro do documento de Mobile.
 
 ## Funcionalidades
 
@@ -64,7 +70,7 @@ A tela Sobre o App fica em `src/app/sobre.tsx` e abre pelo login ou pelo ícone 
 | 03 Autenticação      | cadastro e login na API Java, token JWT guardado no expo-secure-store, logout que limpa o token e volta ao login em qualquer 401 |
 | 04 Estilização       | tema próprio em `src/theme` (cores, fonte Nunito, espaçamentos) e ícone, splash e logo em `assets/`                              |
 | 05 Arquitetura       | pastas por responsabilidade, TypeScript, ESLint + Prettier e poucas bibliotecas                                                  |
-| 06 Vídeo             | https://youtu.be/P3i5SsJJ-pk                                                                                                     |
+| 06 Vídeo             | [vídeo no YouTube](https://youtu.be/WhVK23B2Upg), seguindo o roteiro do documento de Mobile                                      |
 | 07 Publicação        | APK gerado com EAS Build e distribuído pelo Firebase App Distribution, com o hash do commit em Sobre o App                       |
 
 ## Tecnologias
@@ -106,7 +112,7 @@ npx expo start
 Leia o QR code com o Expo Go (Android) ou com a câmera (iPhone). O `.env` aponta o app para a API publicada:
 
 ```
-EXPO_PUBLIC_API_URL=https://gs-sobrabem-java.onrender.com
+EXPO_PUBLIC_API_URL=https://gs-sobrabem-java-final.onrender.com
 ```
 
 Outros comandos: `npm run lint` (ESLint) e `npm run format` (Prettier).
